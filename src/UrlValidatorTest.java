@@ -59,7 +59,7 @@ public class UrlValidatorTest extends TestCase {
 	   System.out.println(String.format("%-70s", thisString = "http") + urlVal.isValid(thisString));
 	   System.out.println(String.format("%-70s", thisString = "http://") + urlVal.isValid(thisString));
 	   
-	   System.out.println(String.format("%-70s", thisString = "") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "") + urlVal.isValid(thisString)); 
    }
    
    
