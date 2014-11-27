@@ -40,10 +40,26 @@ public class UrlValidatorTest extends TestCase {
    
    public void testManualTest()
    {
+	   String thisString = "";
 	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
-	   System.out.println(urlVal.isValid("http://www.amazon.com"));
+
+	   System.out.println("Expected Valid Urls:");
+	   System.out.println(String.format("%-70s", thisString = "http://www.amazon.com") + urlVal.isValid(thisString));		//Given by instructor
+	   System.out.println(String.format("%-70s", thisString = "http://www.com") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://amazon.com") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "www.hero6.org") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "hero6.org") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "24.20.29.121") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://[2a00:1450:4007:80b::1008]/") + urlVal.isValid(thisString));
 	   
+	   System.out.println("\nExpected Invalid Urls:");
+	   System.out.println(String.format("%-70s", thisString = "http://www.amazon") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "httpwww.amazon.com") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "://www.amazon.com") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://") + urlVal.isValid(thisString));
 	   
+	   System.out.println(String.format("%-70s", thisString = "") + urlVal.isValid(thisString));
    }
    
    
