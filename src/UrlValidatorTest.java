@@ -178,6 +178,14 @@ public class UrlValidatorTest extends TestCase {
    
    public void testIsValid()
    {
+	   /*
+	    * We have a solid breakdown of partitioning. It shouldn't be too hard to create our own version of the combination technique used
+	    * in the code from part A. We shouldn't copy the code, but formalizing our partitions, adding an array of possible values (positive
+	    * and negative test cases) for each subsection of the url, and then testing all combinations would be a great programming based test.
+	    * He actually suggests this approach in the project guidelines, but emphasizes that we should develop our own logic.
+	    *  
+	    */
+	   
 	   for(int i = 0;i<10000;i++)
 	   {
 		   
