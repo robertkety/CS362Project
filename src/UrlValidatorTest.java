@@ -51,15 +51,62 @@ public class UrlValidatorTest extends TestCase {
 	   System.out.println(String.format("%-70s", thisString = "hero6.org") + urlVal.isValid(thisString));
 	   System.out.println(String.format("%-70s", thisString = "24.20.29.121") + urlVal.isValid(thisString));
 	   System.out.println(String.format("%-70s", thisString = "http://[2a00:1450:4007:80b::1008]/") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "ftp://google.com") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "bolo://bolo.com") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "bitcoin://google.com") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "bitcoin1://google.com") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "chrome-extension://google.com") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "-extension://google.com") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "chrome-://google.com") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "chrome.extension://google.com") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://ww3-www.google.com") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://ww3_www.google.com") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://ww3.www.google.com") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://ww3~www.google.com") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://www.google~test.com") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://www.google-test.com") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://www.google_test.com") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://www.google.test~com") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://www.google.test-com") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://www.google.test_com") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://www.google.arpa") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://www.google.com.us") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://www.state.or.us") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://www.state.or.us.gov") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "ftp://user:password@google.com") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "mailto://ketyr@onid.oregonstate.edu") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "mailto://robertkety@gmail.com") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://www.google.com/%2F") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://www.google.com/%0D%0A") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://www.domain.edu:80/path?query_string#fragment_id") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://www.domain.edu:80") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://www.domain.edu:80/") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://www.domain.edu:80/path") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://www.domain.edu:80/path?query_string") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://www.domain.edu:80/path#fragment_id") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://www.domain.edu:80/path?query-string#fragment_id") + urlVal.isValid(thisString));
 	   
 	   System.out.println("\nExpected Invalid Urls:");
 	   System.out.println(String.format("%-70s", thisString = "http://www.amazon") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "!!!://www.amazon") + urlVal.isValid(thisString));
 	   System.out.println(String.format("%-70s", thisString = "httpwww.amazon.com") + urlVal.isValid(thisString));
 	   System.out.println(String.format("%-70s", thisString = "://www.amazon.com") + urlVal.isValid(thisString));
 	   System.out.println(String.format("%-70s", thisString = "http") + urlVal.isValid(thisString));
 	   System.out.println(String.format("%-70s", thisString = "http://") + urlVal.isValid(thisString));
+	   System.out.println(String.format("%-70s", thisString = "http://bad!!!.gov") + urlVal.isValid(thisString));
+	   thisString = "http://how-many-characters-does-it-take-to-get-to-the-center-of-a-tootsie-pop-one-two-three-four-five-six-seven-eight-nine-ten-eleven-twelve-thirteen-ugh-this-is-taking-too-long-maybe-just-ill-google-it-euerka-google-says-it-is-two-hundred-and-fifty-six-characters.com";
+	   System.out.println(String.format("%-70s", "<Too long to output>") + urlVal.isValid(thisString));
+	   thisString = "http://how-many-characters-does-it-take-to-get-to-the-center-of-a-tootsie-pop-one-two-three-four-five-six-seven-eight-nine-ten-eleven-twelve-thirteen-ugh-this-is-taking-too-long-maybe-just-ill-google-it-euerka-google-says-it-is-two-hundred-and-fifty-six-characters-that-did-not-seem-to-break-maybe-try-one-a-little-longer.com";
+	   System.out.println(String.format("%-70s", "<Too long to output>") + urlVal.isValid(thisString));
+	   thisString = "http://how-many-characters-does-it-take-to-get-to-the-center-of-a-tootsie-pop-one-two-three-four-five-six-seven-eight-nine-ten-eleven-twelve-thirteen-ugh-this-is-taking-too-long-maybe-just-ill-google-it-euerka-google-says-it-is-two-hundred-and-fifty-six-characters.google.com";
+	   System.out.println(String.format("%-70s", "<Too long to output>") + urlVal.isValid(thisString));
+	   thisString = "http://www.google.how-many-characters-does-it-take-to-get-to-the-center-of-a-tootsie-pop-one-two-three-four-five-six-seven-eight-nine-ten-eleven-twelve-thirteen-ugh-this-is-taking-too-long-maybe-just-ill-google-it-euerka-google-says-it-is-two-hundred-and-fifty-six-characters";
+	   System.out.println(String.format("%-70s", "<Too long to output>") + urlVal.isValid(thisString));
 	   
-	   System.out.println(String.format("%-70s", thisString = "") + urlVal.isValid(thisString)); 
+	   //Kept this negative test on a separate line for easy copy/paste in later functions. 
+	   //Additional negative tests above these lines please
+	   System.out.println(String.format("%-70s", thisString = "") + urlVal.isValid(thisString));
+	   
    }
    
    
