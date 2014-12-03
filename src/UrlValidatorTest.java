@@ -17,7 +17,7 @@
 
 
 import junit.framework.TestCase;
-import java.util.Random;
+//import java.util.Random;
 
 /**
  * Performs Validation Test for url validations.
@@ -61,9 +61,11 @@ public class UrlValidatorTest extends TestCase {
 	   System.out.println(String.format("%-70s", thisString = "http://amazon.com") + "Expected: true\tActual: " + urlVal.isValid(thisString));
 	   System.out.println(String.format("%-70s", thisString = "www.hero6.org") + "Expected: true\tActual: " + urlVal.isValid(thisString));
 	   System.out.println(String.format("%-70s", thisString = "hero6.org") + "Expected: true\tActual: " + urlVal.isValid(thisString));
-	   System.out.println(String.format("%-70s", thisString = "http://74.125.224.72/") + "Expected: true\tActual: " + urlVal.isValid(thisString));
+	   /* Turns out that Apache has a separate validator for this: http://commons.apache.org/proper/commons-validator/apidocs/org/apache/commons/validator/routines/package-summary.html#other.inet
+	    * System.out.println(String.format("%-70s", thisString = "http://74.125.224.72/") + "Expected: true\tActual: " + urlVal.isValid(thisString));
 	   System.out.println(String.format("%-70s", thisString = "74.125.224.72") + "Expected: true\tActual: " + urlVal.isValid(thisString));
 	   System.out.println(String.format("%-70s", thisString = "http://[2a00:1450:8003::93]/") + "Expected: true\tActual: " + urlVal.isValid(thisString));
+	   */
 	   System.out.println(String.format("%-70s", thisString = "ftp://google.com") + "Expected: true\tActual: " + urlVal.isValid(thisString));
 	   System.out.println(String.format("%-70s", thisString = "bolo://bolo.com") + "Expected: true\tActual: " + urlVal.isValid(thisString));
 	   System.out.println(String.format("%-70s", thisString = "bitcoin://google.com") + "Expected: true\tActual: " + urlVal.isValid(thisString));
@@ -99,9 +101,6 @@ public class UrlValidatorTest extends TestCase {
 	   System.out.println(String.format("%-70s", thisString = "http://www.domain.edu:80/path#fragment_id") + "Expected: true\tActual: " + urlVal.isValid(thisString));
 	   System.out.println(String.format("%-70s", thisString = "http://www.domain.edu:80/path?query-string#fragment_id") + "Expected: true\tActual: " + urlVal.isValid(thisString));
        
-       //not 100% sure but we should test url
-	   System.out.println(String.format("%-70s", thisString = "255.255.255.255") + "Expected: True\tActual: " + urlVal.isValid(thisString));
-       
 	   System.out.println("\nExpected Invalid Urls:");
 	   System.out.println(String.format("%-70s", thisString = "http://www.amazon") + "Expected: false\tActual: " + urlVal.isValid(thisString));
 	   System.out.println(String.format("%-70s", thisString = "!!!://www.amazon") + "Expected: false\tActual: " + urlVal.isValid(thisString));
@@ -123,15 +122,14 @@ public class UrlValidatorTest extends TestCase {
 	   //Additional negative tests above these lines please
 	   System.out.println(String.format("%-70s", thisString = "") + "Expected: false\tActual: " + urlVal.isValid(thisString));
        
+	   /* Commented out once I saw that Apache offers an IPv4 Validator: http://commons.apache.org/proper/commons-validator/apidocs/org/apache/commons/validator/routines/package-summary.html#other.inet
        //we should test this
        System.out.println(String.format("%-70s", thisString = "257.257.258.251") + "Expected: false\tActual: " + urlVal.isValid(thisString));
-
+       */
    }
    
    /* 
     * Partitioning ideas:
-    * ipv4
-    * ipv6
     * url:  - The primary partition, we can probably lump together the ipvX tests into a separate partition
     * 	According to http://en.wikipedia.org/wiki/Uniform_resource_locator the full url format is:
     * 		scheme://domain:port/path?query_string#fragment_id
@@ -143,11 +141,7 @@ public class UrlValidatorTest extends TestCase {
     * 	Extended:
     * 		scheme://domain:port/path?query_string#fragment_id
     * 	Advanced:
-    * 		IPV4:
-    * 			scheme://255.255.255.255:port/path?query_string#fragment_id
-    * 		IPV6:
-    *			scheme://[2a00:1450:8003::93]:port/path?query_string#fragment_id
-    *		mailto:emailaddress@hostname			(Email)
+    * 		mailto:emailaddress@hostname			(Email)
     *		ftp://username:password@domain			(Login credentials)
     *		http://xn--sterreich-z7a.icom.museum/	(Internationalized web addresses)
     * 
@@ -162,7 +156,6 @@ public class UrlValidatorTest extends TestCase {
     * 		Null/Empty-string Permutations: We need to test when certain components are no added (e.g., missing path, missing scheme, etc)
     * 			For example:
     * 				http://google.com	(No subdomain, no path)
-    * 				sftp://192.168.1.1 	(No port, no path)
     * 				www.google.com/path	(No scheme)
     * 				
     */   
@@ -1194,7 +1187,7 @@ public class UrlValidatorTest extends TestCase {
 	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
 	   String thisString = "";
 	   boolean result = false;
-//	   int randomGen = new Random().nextInt(SpecificationInvalidSubdomain.length);
+	   //int randomGen = new Random().nextInt(SpecificationInvalidSubdomain.length);
 	   int maxNumLabels = 10;
 	   String hostname = "";
        String invalidname = "";
@@ -1206,7 +1199,8 @@ public class UrlValidatorTest extends TestCase {
 				   ResultPair testPair = SpecificationValidSubdomain[n];
 				   hostname += testPair.item + ".";
                    
-                   System.out.println(String.format("%-70s", thisString = "http://" + hostname + "google.com" + ) + "Expected: " + testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
+                   System.out.println(String.format("%-70s", thisString = "http://" + hostname + "google.com") + "Expected: " + testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
+                   assertEquals("http://" + hostname + "google.com", testPair.valid, result);
 			   }
 		   }
 	   }
@@ -1217,35 +1211,36 @@ public class UrlValidatorTest extends TestCase {
                    ResultPair testPair = SpecificationInvalidSubdomain[n];
                    invalidname += testPair.item + ".";
                    
-                   System.out.println(String.format("%-70s", thisString = "http://" + invalidname + "google.com" + ) + "Expected: " + testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
+                   System.out.println(String.format("%-70s", thisString = "http://" + invalidname + "google.com") + "Expected: " + testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
+                   assertEquals("http://" + invalidname + "google.com", testPair.valid, result);
                }
            }
        }
     }
     
-    ResultPair[] SpecificationUrlQuery = {
+    ResultPair[] SpecificationQueryStrings = {
         new ResultPair("?title=Main&action=raw", true),
         new ResultPair("?title=Main", true),
         new ResultPair("?first=this+is+a+field&second=was+it+clear+%28already%29%3F", true),
         new ResultPair("", true)
     };
    
-    public void testQuery()
+    public void testQueryStrings()
     {
         UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
         String thisString = "";
         boolean result = false;
         
-        System.out.println("\Query Partition:");
+        System.out.println("Query Partition:");
         
-        for (int n = 0; n < SpecificationUrlQuery.length; n++) {
-            ResultPair testPair = SpecificationUrlQuery[n];
+        for (int n = 0; n < SpecificationQueryStrings.length; n++) {
+            ResultPair testPair = SpecificationQueryStrings[n];
             System.out.println(String.format("%-70s", thisString = "http://www.google.com/" + testPair.item) + "Expected: "+ testPair.valid + "/tActcual:" + (result = urlVal.isValid(thisString)));
             assertEquals("http://www.google.com/" + testPair.item, testPair.valid, result);
         }
     }
     
-    ResultPair[] portNumbers = {
+    ResultPair[] SpecificationPortNumbers = {
         new ResultPair(":1234", true),
         new ResultPair(":123456", true),
         new ResultPair(":ada", false),
@@ -1258,10 +1253,10 @@ public class UrlValidatorTest extends TestCase {
         String thisString = "";
         boolean result = false;
         
-        System.out.println("\Query Partition:");
+        System.out.println("Query Partition:");
         
-        for (int n = 0; n < portNumbers.length; n++) {
-            ResultPair testPair = portNumbers[n];
+        for (int n = 0; n < SpecificationPortNumbers.length; n++) {
+            ResultPair testPair = SpecificationPortNumbers[n];
             System.out.println(String.format("%-70s", thisString = "http://www.google.com" + testPair.item) + "Expected: "+ testPair.valid + "/tActcual:" + (result = urlVal.isValid(thisString)));
             assertEquals("http://www.google.com" + testPair.item, testPair.valid, result);
         }
@@ -1276,7 +1271,7 @@ public class UrlValidatorTest extends TestCase {
 	    * He actually suggests this approach in the project guidelines, but emphasizes that we should develop our own logic.
 	    *  
 	    */
-//	   UrlValidator urlVal = new UrlValidator(null, null, );
+	   //	   UrlValidator urlVal = new UrlValidator(null, null, );
        
        
        
