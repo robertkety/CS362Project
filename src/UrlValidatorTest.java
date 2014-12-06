@@ -1469,7 +1469,39 @@ public class UrlValidatorTest extends TestCase {
    
    public void testAnyOtherUnitTest()
    {
-	   
+	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
+       String thisString = "";
+       boolean result = false;
+       boolean expect = true;
+       System.out.println("\nUnit test:");
+       
+       //all valid schemes combined with all valid TLDs:
+       for (int i = 0; i < KnownValidSchemes.length; i++) {
+          ResultPair schemePair = KnownValidSchemes[i];
+          thisString = schemePair.item + "://www.google.";
+          
+          for (int j = 0; j < KnownValidTLD.length; j++) {
+               ResultPair tldPair = KnownValidTLD[j];
+               thisString += tldPair.item;
+               System.out.println(String.format("%-70s", thisString) + "Expected: Valid" + "\tActual: " + (result = urlVal.isValid(thisString)));
+               assertEquals(thisString, expect, result);
+               
+               //additionally, each combination with all valid Query Strings
+               for (int n = 0; n < SpecificationQueryStrings.length; n++) {
+                   ResultPair queryPair = SpecificationQueryStrings[n];
+                   thisString += "/" + queryPair.item;
+                   System.out.println(String.format("%-70s", thisString) + "Expected: " + queryPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
+                   assertEquals(thisString, queryPair.valid, result);
+               }
+               //additionally, each combination with all valid Port numbers
+               for (int l = 0; l < SpecificationPortNumbers.length; l++) {
+                   ResultPair portPair = SpecificationPortNumbers[l];
+                   thisString += portPair.item;
+                   System.out.println(String.format("%-70s", thisString) + "Expected: " + portPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
+                   assertEquals(thisString, portPair.valid, result);
+               }
+          }
+      }
    }
    /**
     * Create set of tests by taking the testUrlXXX arrays and
