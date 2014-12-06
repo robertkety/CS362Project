@@ -55,7 +55,7 @@ public class UrlValidatorTest extends TestCase {
 	   String thisString = "";
 	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
 
-	   System.out.println("Expected Valid Urls:");
+	   System.out.println("Expected Valid Urls (Manual Tests):");
 	   System.out.println(String.format("%-70s", thisString = "http://www.amazon.com") + "Expected: true\tActual: " + urlVal.isValid(thisString));		//Given by instructor
 	   System.out.println(String.format("%-70s", thisString = "http://www.com") + "Expected: true\tActual: " + urlVal.isValid(thisString));
 	   System.out.println(String.format("%-70s", thisString = "http://amazon.com") + "Expected: true\tActual: " + urlVal.isValid(thisString));
@@ -101,7 +101,7 @@ public class UrlValidatorTest extends TestCase {
 	   System.out.println(String.format("%-70s", thisString = "http://www.domain.edu:80/path#fragment_id") + "Expected: true\tActual: " + urlVal.isValid(thisString));
 	   System.out.println(String.format("%-70s", thisString = "http://www.domain.edu:80/path?query-string#fragment_id") + "Expected: true\tActual: " + urlVal.isValid(thisString));
        
-	   System.out.println("\nExpected Invalid Urls:");
+	   System.out.println("\nExpected Invalid Urls (Manual):");
 	   System.out.println(String.format("%-70s", thisString = "http://www.amazon") + "Expected: false\tActual: " + urlVal.isValid(thisString));
 	   System.out.println(String.format("%-70s", thisString = "!!!://www.amazon") + "Expected: false\tActual: " + urlVal.isValid(thisString));
 	   System.out.println(String.format("%-70s", thisString = "httpwww.amazon.com") + "Expected: false\tActual: " + urlVal.isValid(thisString));
@@ -1171,7 +1171,7 @@ public class UrlValidatorTest extends TestCase {
 		   new ResultPair("123-abc", true),
 		   new ResultPair("12", true),
 		   new ResultPair("123", true),
-		   new ResultPair("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", true)
+		   new ResultPair("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-0123456789", true)  //63 characters are the max valid
    };
    ResultPair [] SpecificationInvalidSubdomain = {
 		   new ResultPair("", false),
@@ -1189,18 +1189,88 @@ public class UrlValidatorTest extends TestCase {
 	   boolean result = false;
 	   //int randomGen = new Random().nextInt(SpecificationInvalidSubdomain.length);
 	   int maxNumLabels = 10;
+	   String subdomain = "";
 	   String hostname = "";
-       String invalidname = "";
+	   String validTLD = "com";
+	   boolean validity = false;
+       String invalidsubdomain = "";
+       String url = "";
+       int[][] arrayOfBadTests = new int[65536][7];
+       int arrayCounter = 0;
 	   System.out.println("\nTesting Subdomain Partition:");
+	   ResultPair [] AllSubdomains = new ResultPair[SpecificationValidSubdomain.length + SpecificationInvalidSubdomain.length]; 
+	   System.arraycopy(SpecificationValidSubdomain, 0, AllSubdomains, 0, SpecificationValidSubdomain.length);
+	   System.arraycopy(SpecificationInvalidSubdomain, 0, AllSubdomains, SpecificationValidSubdomain.length, SpecificationInvalidSubdomain.length);
 	   
-	    for (int k = 1; k < maxNumLabels; k++) {
+	   System.out.println("\n1 to 5 level Subdomain Partition (Output of test failures only):");
+	   
+	   for (int k = 0; k < AllSubdomains.length; k++) {
+		   for (int m = -1; m < AllSubdomains.length; m++) {
+			   for (int n = -1; n < AllSubdomains.length; n++) {
+				   for (int p = -1; p < AllSubdomains.length; p++) {
+					   for (int q = -1; q < AllSubdomains.length; q++) { 
+						   ResultPair testPair1 = AllSubdomains[k];				   
+						   ResultPair testPair2 = (m == -1) ? new ResultPair("", true) : AllSubdomains[m];
+						   ResultPair testPair3 = (n == -1) ? new ResultPair("", true) : AllSubdomains[n];
+						   ResultPair testPair4 = (p == -1) ? new ResultPair("", true) : AllSubdomains[p];
+						   ResultPair testPair5 = (q == -1) ? new ResultPair("", true) : AllSubdomains[q];
+						   
+						   hostname = testPair1.item;
+						   hostname += (m == -1) ? "" : "." + testPair2.item;
+						   hostname += (n == -1) ? "" : "." + testPair3.item;
+						   hostname += (p == -1) ? "" : "." + testPair4.item;
+						   hostname += (q == -1) ? "" : "." + testPair5.item;
+						   hostname += "." + validTLD;
+								   
+						   validity = testPair1.valid && testPair2.valid && testPair3.valid && testPair4.valid && testPair5.valid;
+						   
+						   if(hostname.length() > 253)
+							   validity = false;
+						   
+						   url = "http://" + hostname + "/";
+						   if((validity != (result = urlVal.isValid(url))) && (arrayCounter < 65536)){
+							   arrayOfBadTests[arrayCounter][0] = k;
+							   arrayOfBadTests[arrayCounter][1] = m;
+							   arrayOfBadTests[arrayCounter][2] = n;
+							   arrayOfBadTests[arrayCounter][3] = p;
+							   arrayOfBadTests[arrayCounter][4] = q;
+							   arrayOfBadTests[arrayCounter][5] = validity ? 1 : 0;
+							   arrayOfBadTests[arrayCounter][6] = result ? 1 : 0;
+							   
+							   arrayCounter += 1;
+						   }						   
+						   //System.out.println(String.format("%-70s", String.format("Alldomain elements: [%d].[%d].[%d].[%d].[%d]", k, m, n, p, q)) + "\t\tExpected: " + validity + "\t\tActual: " + (result = urlVal.isValid(url)));
+						   //System.out.println(((hostname.length() > 261) ? String.format("%-262s", "<Output too long>") : String.format("%-262s", url)) + "Expected: " + validity + "\tActual: " + (result = urlVal.isValid(url)));
+				           //assertEquals(url, validity, result);
+					   }
+				   }
+			   }
+		   }
+	   }
+	    
+	   for(int k = 0; k < arrayCounter; k++){
+		   url = "http://";
+		   url += AllSubdomains[arrayOfBadTests[k][0]].item;
+		   url += (arrayOfBadTests[k][1] == -1) ? "" : "." + AllSubdomains[arrayOfBadTests[k][1]].item;
+		   url += (arrayOfBadTests[k][2] == -1) ? "" : "." + AllSubdomains[arrayOfBadTests[k][2]].item;
+		   url += (arrayOfBadTests[k][3] == -1) ? "" : "." + AllSubdomains[arrayOfBadTests[k][3]].item;
+		   url += (arrayOfBadTests[k][4] == -1) ? "" : "." + AllSubdomains[arrayOfBadTests[k][4]].item;
+		   url += "/";
+
+		   validity = (arrayOfBadTests[k][5] != 0) ? true : false;
+		   result = (arrayOfBadTests[k][6] != 0) ? true : false;
+		   
+		   System.out.println(((hostname.length() > 261) ? String.format("%-262s", "<Output too long>") : String.format("%-262s", url)) + "Expected: " + validity + "\t\tActual: " + result);
+	   }
+	   
+	   /*for (int k = 1; k < maxNumLabels; k++) {
 		   for(int m = 0; m < k; m++){
 			   for (int n = 0; n < SpecificationValidSubdomain.length; n++) {
 				   ResultPair testPair = SpecificationValidSubdomain[n];
-				   hostname += testPair.item + ".";
+				   subdomain += testPair.item + ".";
                    
-                   System.out.println(String.format("%-70s", thisString = "http://" + hostname + "google.com") + "Expected: " + testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
-                   assertEquals("http://" + hostname + "google.com", testPair.valid, result);
+                   System.out.println(String.format("%-70s", thisString = "http://" + subdomain + "google.com") + "Expected: " + testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
+                   //assertEquals("http://" + subdomain + "google.com", testPair.valid, result);
 			   }
 		   }
 	   }
@@ -1209,21 +1279,31 @@ public class UrlValidatorTest extends TestCase {
            for(int m = 0; m < k; m++){
                for (int n = 0; n < SpecificationInvalidSubdomain.length; n++) {
                    ResultPair testPair = SpecificationInvalidSubdomain[n];
-                   invalidname += testPair.item + ".";
+                   invalidsubdomain += testPair.item + ".";
                    
-                   System.out.println(String.format("%-70s", thisString = "http://" + invalidname + "google.com") + "Expected: " + testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
-                   assertEquals("http://" + invalidname + "google.com", testPair.valid, result);
+                   System.out.println(String.format("%-70s", thisString = "http://" + invalidsubdomain + "google.com") + "Expected: " + testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
+                   assertEquals("http://" + invalidsubdomain + "google.com", testPair.valid, result);
                }
            }
-       }
+       }*/
     }
     
-    ResultPair[] SpecificationQueryStrings = {
-        new ResultPair("?title=Main&action=raw", true),
-        new ResultPair("?title=Main", true),
-        new ResultPair("?first=this+is+a+field&second=was+it+clear+%28already%29%3F", true),
-        new ResultPair("", true)
-    };
+   // "The first question mark is used as a separator and is not part of the query string" - http://en.wikipedia.org/wiki/Query_string
+   ResultPair[] SpecificationQueryStrings = {
+	    new ResultPair("title=Main&action=raw", true),
+	    new ResultPair("title=Main", true),
+	    new ResultPair("first=this+is+a+field&second=was+it+clear+%28already%29%3F", true),  //http://en.wikipedia.org/wiki/Query_string
+	    new ResultPair("first=under_score", true),
+	    new ResultPair("second=dash-dash", true),
+	    new ResultPair("third=dots.dots", true),
+	    new ResultPair("fourth=asterick*asterick", true),
+	    new ResultPair("fifth=tilde~tilde", true),  //Permitted by RFC3986
+	    new ResultPair("", true)
+	};
+	ResultPair[] SpecificationInvalidQueryStrings = {
+	    new ResultPair("bad=@!%$% &%^&(*^&*(", false),
+	    new ResultPair("bad2= ", false),	    
+	};
    
     public void testQueryStrings()
     {
@@ -1235,30 +1315,40 @@ public class UrlValidatorTest extends TestCase {
         
         for (int n = 0; n < SpecificationQueryStrings.length; n++) {
             ResultPair testPair = SpecificationQueryStrings[n];
-            System.out.println(String.format("%-70s", thisString = "http://www.google.com/" + testPair.item) + "Expected: "+ testPair.valid + "/tActcual:" + (result = urlVal.isValid(thisString)));
-            assertEquals("http://www.google.com/" + testPair.item, testPair.valid, result);
+            System.out.println(String.format("%-85s", thisString = "http://www.google.com/path?" + testPair.item) + "Expected: "+ testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
+            //assertEquals("http://www.google.com/" + testPair.item, testPair.valid, result);
+        }
+        
+        for (int n = 0; n < SpecificationInvalidQueryStrings.length; n++) {
+            ResultPair testPair = SpecificationInvalidQueryStrings[n];
+            System.out.println(String.format("%-85s", thisString = "http://www.google.com/path?" + testPair.item) + "Expected: "+ testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
+            //assertEquals("http://www.google.com/" + testPair.item, testPair.valid, result);
         }
     }
     
-    ResultPair[] SpecificationPortNumbers = {
-        new ResultPair(":1234", true),
-        new ResultPair(":123456", true),
-        new ResultPair(":ada", false),
-        new ResultPair(":-1234", false)
+    ResultPair[] SpecificationInvalidPortNumbers = {
+        new ResultPair("ada", false),
+        new ResultPair("-1234", false)
     };
     
-    public void portNumbers()
+    public void testPortNumbers()
     {
         UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
         String thisString = "";
         boolean result = false;
         
-        System.out.println("Query Partition:");
+        System.out.println("Port Number Partition:");
         
-        for (int n = 0; n < SpecificationPortNumbers.length; n++) {
-            ResultPair testPair = SpecificationPortNumbers[n];
-            System.out.println(String.format("%-70s", thisString = "http://www.google.com" + testPair.item) + "Expected: "+ testPair.valid + "/tActcual:" + (result = urlVal.isValid(thisString)));
-            assertEquals("http://www.google.com" + testPair.item, testPair.valid, result);
+        //Known valid port numbers from http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Well-known_ports
+        for (int n = 0; n < 61002; n++) {
+            ResultPair testPair = new ResultPair(new Integer(n).toString(), true);
+            System.out.println(String.format("%-70s", thisString = "http://www.google.com:" + testPair.item) + "Expected: "+ testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
+            //assertEquals("http://www.google.com" + testPair.item, testPair.valid, result);
+        }
+        for (int n = 0; n < SpecificationInvalidPortNumbers.length; n++) {
+            ResultPair testPair = SpecificationInvalidPortNumbers[n];
+            System.out.println(String.format("%-70s", thisString = "http://www.google.com:" + testPair.item) + "Expected: "+ testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
+            //assertEquals("http://www.google.com" + testPair.item, testPair.valid, result);
         }
     }
 
