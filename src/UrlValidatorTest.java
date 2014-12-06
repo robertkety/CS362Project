@@ -17,7 +17,7 @@
 
 
 import junit.framework.TestCase;
-//import java.util.Random;
+import java.util.Random;
 
 /**
  * Performs Validation Test for url validations.
@@ -1273,14 +1273,108 @@ public class UrlValidatorTest extends TestCase {
 	    */
 	   //	   UrlValidator urlVal = new UrlValidator(null, null, );
        
+	   Random randomGen = new Random();
+       boolean result = false;
+       boolean expect = false;
+       int randomNum, pos1,pos2,pos3,pos4,pos5;
+       UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
        
+       //strings array to choose from
+       String schemestring[] = {"http://", "ftp://", "h3t://"};
+       String badschemestring [] = {"http//", "http;//", "http:"};
        
-	   for(int i = 0;i<10000;i++)
-	   {
-		   
+       String authritystring[] = {"www.cheese.com",  "pepperoni.com", "255.255.255.255"};
+       String badauthritystring [] = {"256.100.123.134", ".olive.", ""};
+       
+       String portstring[] = {":1234", ":567", ":89"};
+       String badportstring[] = {":cheese",":0pepperoi0", ":-01143"};
+       
+       String pathstring[] = {"/cheese", "/pepperoi", "/black/olive"};
+       String badpathstring [] = {"/cheese//", "/|peperroi", "//black olive"};
+       
+       String querystring[] = {"?cheese=100", "?pepperoni=pizza&speggetti", "?pizza=black+olive"};
+       String badquerystring [] = {"?@*#^*!()","?!@#!@asd+qwe","?[asd#$@]"};
+       
+       //these are the strings
+       String scheme = "";
+       String authrity = "";
+       String port = "";
+       String path = "";
+       String query = "";
+       
+       System.out.println("\ntesting isvalid():\n");
+       for(int i = 0;i<100;i++)
+       {
+           //generate random numbers
+           randomNum = randomGen.nextInt();
+           
+           //generate randon between 0-2 to choose the string
+           pos1 = randomGen.nextInt(3);
+           pos2 = randomGen.nextInt(3);
+           pos3 = randomGen.nextInt(3);
+           pos4 = randomGen.nextInt(3);
+           pos5 = randomGen.nextInt(3);
+           
+           //We will randomly pass in valid or invalid parts,
+           //if its devisible by 2 it expected result should be true
+           if( (randomNum % 2)== 0){
+               scheme = schemestring[pos1];
+               authrity = authritystring[pos2];
+               port = portstring[pos3];
+               path = pathstring[pos4];
+               query = querystring[pos5];
+               expect = true;
+           }
+           else{
+               scheme = badschemestring[pos1];
+               authrity = badauthritystring[pos2];
+               port = badportstring[pos3];
+               path = badpathstring[pos4];
+               query = badquerystring[pos5];
+               expect = false;
+           }
            
            
-	   }
+           //If the result isn't as expected it will print out an error messege.
+           System.out.println("\nTesting Query\n");
+           System.out.println((result = urlVal.isValid(schemestring[pos1] + authritystring[pos2] + portstring[pos3] + pathstring[pos4] + query)) + "Return:" + result +"Expected:"+ expect);
+           //error message.
+           if (expect != result){
+               System.out.println("\n\tFound an error: expected results for QUERY does not match\n");
+           }
+           
+           //testing Path in isValid
+           System.out.println("\nTesting Path\n");
+           System.out.println((result = urlVal.isValid(schemestring[pos1] + authritystring[pos2] + portstring[pos3] + path + querystring[pos5])) + "Return:" + result +"Expected:"+ expect);
+           if (expect != result){
+               System.out.println("\n\tFound an error: expected results for PATH does not match\n");
+           }
+           
+           //testing Port in isValid
+           System.out.println("\nTesting Port\n");
+           System.out.println((result = urlVal.isValid(schemestring[pos1] + authritystring[pos2] + port + pathstring[pos4] + querystring[pos5])) + "Return:" + result +"Expected:"+ expect);
+           if (expect != result){
+               System.out.println("\n\tFound an error: expected results for PORT does not match\n");
+           }
+           
+           //testing Path in isValid
+           System.out.println("\ntesting Path\n");
+           System.out.println((result = urlVal.isValid(schemestring[pos1] + authrity + portstring[pos3] + pathstring[pos4] + querystring[pos5])) + "Return:" + result +"Expected:"+ expect);
+           if (expect != result){
+               System.out.println("\n\tFound an error: expected results for AUTHERITY does not match\n");
+           }
+           
+           //testing Scheme in isValid
+           System.out.println("\ntesting Scheme\n");
+           System.out.println((result = urlVal.isValid(scheme + authritystring[pos2] + portstring[pos3] + pathstring[pos4] + querystring[pos5])) + "Return:" + result +"Expected:"+ expect);
+           if (expect != result){
+               System.out.println("\n\tFound an error: expected results for AUTHERITY does not match\n");
+           }
+
+       
+       }
+       
+       System.out.println("\ntesting complete\n");
    }
    
    public void testAnyOtherUnitTest()
