@@ -377,17 +377,17 @@ public class UrlValidatorTest extends TestCase {
 	   System.out.println("\nTesting Scheme Partition:");
 	   for (int n = 0; n < KnownValidSchemes.length; n++) {
 		   ResultPair testPair = KnownValidSchemes[n];
-		   System.out.println(String.format("%-70s", thisString = testPair.item + "://www.google.com/") + "Expected: " + testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
+		   System.out.println(String.format("%-100s", thisString = testPair.item + "://www.google.com/") + "Expected: " + testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
 		   assertEquals(testPair.item + "://www.google.com/", testPair.valid, result);		   
 	   }
 	   for (int n = 0; n < SpecificationValidSchemes.length; n++) {
 		   ResultPair testPair = SpecificationValidSchemes[n];
-		   System.out.println(String.format("%-70s", thisString = testPair.item + "://www.google.com/") + "Expected: " + testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
+		   System.out.println(String.format("%-100s", thisString = testPair.item + "://www.google.com/") + "Expected: " + testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
 		   assertEquals(testPair.item + "://www.google.com/", testPair.valid, result);		   
 	   }
 	   for (int n = 0; n < SpecificationInvalidSchemes.length; n++) {
 		   ResultPair testPair = SpecificationInvalidSchemes[n];
-		   System.out.println(String.format("%-70s", thisString = testPair.item + "://www.google.com/") + "Expected: " + testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
+		   System.out.println(String.format("%-100s", thisString = testPair.item + "://www.google.com/") + "Expected: " + testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
 		   assertEquals(testPair.item + "://www.google.com/", testPair.valid, result);		   
 	   }
    }
@@ -1145,17 +1145,17 @@ public class UrlValidatorTest extends TestCase {
 	   System.out.println("\nTesting Top-level Domain Partition:");
 	   for (int n = 0; n < KnownValidTLD.length; n++) {
 		   ResultPair testPair = KnownValidTLD[n];
-		   System.out.println(String.format("%-70s", thisString = "http://www.google." + testPair.item) + "Expected: " + testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
+		   System.out.println(String.format("%-100s", thisString = "http://www.google." + testPair.item) + "Expected: " + testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
 		   //assertEquals("http://www.google." + testPair.item, testPair.valid, result);
 	   }
 	   for (int n = 0; n < SpecificationValidTLD.length; n++) {
 		   ResultPair testPair = SpecificationValidTLD[n];
-		   System.out.println(String.format("%-70s", thisString = "http://www.google." + testPair.item) + "Expected: " + testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
+		   System.out.println(String.format("%-100s", thisString = "http://www.google." + testPair.item) + "Expected: " + testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
 		   //assertEquals("http://www.google." + testPair.item, testPair.valid, result);		   
 	   }
 	   for (int n = 0; n < SpecificationInvalidTLD.length; n++) {
 		   ResultPair testPair = SpecificationInvalidTLD[n];
-		   System.out.println(String.format("%-70s", thisString = "http://www.google." + testPair.item) + "Expected: " + testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
+		   System.out.println(String.format("%-100s", thisString = "http://www.google." + testPair.item) + "Expected: " + testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
 		   assertEquals("http://www.google." + testPair.item, testPair.valid, result);		   
 	   }
    }
@@ -1315,13 +1315,13 @@ public class UrlValidatorTest extends TestCase {
         
         for (int n = 0; n < SpecificationQueryStrings.length; n++) {
             ResultPair testPair = SpecificationQueryStrings[n];
-            System.out.println(String.format("%-85s", thisString = "http://www.google.com/path?" + testPair.item) + "Expected: "+ testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
+            System.out.println(String.format("%-100s", thisString = "http://www.google.com/path?" + testPair.item) + "Expected: "+ testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
             //assertEquals("http://www.google.com/" + testPair.item, testPair.valid, result);
         }
         
         for (int n = 0; n < SpecificationInvalidQueryStrings.length; n++) {
             ResultPair testPair = SpecificationInvalidQueryStrings[n];
-            System.out.println(String.format("%-85s", thisString = "http://www.google.com/path?" + testPair.item) + "Expected: "+ testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
+            System.out.println(String.format("%-100s", thisString = "http://www.google.com/path?" + testPair.item) + "Expected: "+ testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
             //assertEquals("http://www.google.com/" + testPair.item, testPair.valid, result);
         }
     }
@@ -1342,39 +1342,40 @@ public class UrlValidatorTest extends TestCase {
         //Known valid port numbers from http://en.wikipedia.org/wiki/List_of_TCP_and_UDP_port_numbers#Well-known_ports
         for (int n = 0; n < 61002; n++) {
             ResultPair testPair = new ResultPair(new Integer(n).toString(), true);
-            System.out.println(String.format("%-70s", thisString = "http://www.google.com:" + testPair.item) + "Expected: "+ testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
+            System.out.println(String.format("%-100s", thisString = "http://www.google.com:" + testPair.item) + "Expected: "+ testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
             //assertEquals("http://www.google.com" + testPair.item, testPair.valid, result);
         }
         for (int n = 0; n < SpecificationInvalidPortNumbers.length; n++) {
             ResultPair testPair = SpecificationInvalidPortNumbers[n];
-            System.out.println(String.format("%-70s", thisString = "http://www.google.com:" + testPair.item) + "Expected: "+ testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
+            System.out.println(String.format("%-100s", thisString = "http://www.google.com:" + testPair.item) + "Expected: "+ testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
             //assertEquals("http://www.google.com" + testPair.item, testPair.valid, result);
         }
     }
 
-   public void testIsValid()
-   {
-	   /*
-	    * We have a solid breakdown of partitioning. It shouldn't be too hard to create our own version of the combination technique used
-	    * in the code from part A. We shouldn't copy the code, but formalizing our partitions, adding an array of possible values (positive
-	    * and negative test cases) for each subsection of the url, and then testing all combinations would be a great programming based test.
-	    * He actually suggests this approach in the project guidelines, but emphasizes that we should develop our own logic.
-	    *  
-	    */
-	   //	   UrlValidator urlVal = new UrlValidator(null, null, );
-       
+    /*
+    * We have a solid breakdown of partitioning. It shouldn't be too hard to create our own version of the combination technique used
+    * in the code from part A. We shouldn't copy the code, but formalizing our partitions, adding an array of possible values (positive
+    * and negative test cases) for each subsection of the url, and then testing all combinations would be a great programming based test.
+    * He actually suggests this approach in the project guidelines, but emphasizes that we should develop our own logic.
+    *  
+    */
+    
+    /* This function passes good an bad components to the URL Validator to confirm that it distinguishes between good and bad URLs. It is most
+     * useful as a unit or regression test as its input domain is limited.  */
+   public void testIntegrityCheck()
+   {   
 	   Random randomGen = new Random();
-       boolean result = false;
-       boolean expect = false;
+       boolean result = true;
+       boolean expect = true;
        int randomNum, pos1,pos2,pos3,pos4,pos5;
        UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
        
        //strings array to choose from
        String schemestring[] = {"http://", "ftp://", "h3t://"};
-       String badschemestring [] = {"http//", "http;//", "http:"};
+       String badschemestring [] = {"http!://", "http;://", "http:://"};
        
-       String authritystring[] = {"www.cheese.com",  "pepperoni.com", "255.255.255.255"};
-       String badauthritystring [] = {"256.100.123.134", ".olive.", ""};
+       String authritystring[] = {"www.cheese.com",  "pepperoni.com", "www.test.us.com"};
+       String badauthritystring [] = {"25.100.123.134", ".olive.", ""};
        
        String portstring[] = {":1234", ":567", ":89"};
        String badportstring[] = {":cheese",":0pepperoi0", ":-01143"};
@@ -1392,13 +1393,13 @@ public class UrlValidatorTest extends TestCase {
        String path = "";
        String query = "";
        
-       System.out.println("\ntesting isvalid():\n");
-       for(int i = 0;i<100;i++)
+       System.out.println("\nTesting isvalid():");
+       for(int i = 0; i < 100; i++)
        {
            //generate random numbers
-           randomNum = randomGen.nextInt();
+           //randomNum = randomGen.nextInt();
            
-           //generate randon between 0-2 to choose the string
+           //generate random between 0-2 to choose the string
            pos1 = randomGen.nextInt(3);
            pos2 = randomGen.nextInt(3);
            pos3 = randomGen.nextInt(3);
@@ -1406,14 +1407,14 @@ public class UrlValidatorTest extends TestCase {
            pos5 = randomGen.nextInt(3);
            
            //We will randomly pass in valid or invalid parts,
-           //if its devisible by 2 it expected result should be true
-           if( (randomNum % 2)== 0){
+           //if its divisible by 2 it expected result should be true
+           if( (new Random(i*i).nextInt() % 20) < 10){
                scheme = schemestring[pos1];
                authrity = authritystring[pos2];
                port = portstring[pos3];
                path = pathstring[pos4];
                query = querystring[pos5];
-               expect = true;
+               expect = (expect && true);
            }
            else{
                scheme = badschemestring[pos1];
@@ -1421,50 +1422,49 @@ public class UrlValidatorTest extends TestCase {
                port = badportstring[pos3];
                path = badpathstring[pos4];
                query = badquerystring[pos5];
-               expect = false;
+               expect = (expect && false);
            }
            
            
-           //If the result isn't as expected it will print out an error messege.
-           System.out.println("\nTesting Query\n");
-           System.out.println((result = urlVal.isValid(schemestring[pos1] + authritystring[pos2] + portstring[pos3] + pathstring[pos4] + query)) + "Return:" + result +"Expected:"+ expect);
-           //error message.
-           if (expect != result){
-               System.out.println("\n\tFound an error: expected results for QUERY does not match\n");
+           //If the result isn't as expected it will print out an error message.
+           result = urlVal.isValid(schemestring[pos1] + authritystring[pos2] + portstring[pos3] + pathstring[pos4] + query);
+           System.out.println(String.format("%-100s", schemestring[pos1] + authritystring[pos2] + portstring[pos3] + pathstring[pos4] + query) + "\tReturn: " + result + "\tExpected: " + expect);
+           if(result != expect){
+        	   System.out.println("\tFound an error: expected results for QUERY does not match");
            }
            
            //testing Path in isValid
-           System.out.println("\nTesting Path\n");
-           System.out.println((result = urlVal.isValid(schemestring[pos1] + authritystring[pos2] + portstring[pos3] + path + querystring[pos5])) + "Return:" + result +"Expected:"+ expect);
-           if (expect != result){
-               System.out.println("\n\tFound an error: expected results for PATH does not match\n");
+           result = urlVal.isValid(schemestring[pos1] + authritystring[pos2] + portstring[pos3] + path + querystring[pos5]);
+           System.out.println(String.format("%-100s", schemestring[pos1] + authritystring[pos2] + portstring[pos3] + path + querystring[pos5]) + "\tReturn: " + result + "\tExpected: " + expect);
+           if(result != expect){
+        	   System.out.println("\tFound an error: expected results for PATH does not match");
            }
            
            //testing Port in isValid
-           System.out.println("\nTesting Port\n");
-           System.out.println((result = urlVal.isValid(schemestring[pos1] + authritystring[pos2] + port + pathstring[pos4] + querystring[pos5])) + "Return:" + result +"Expected:"+ expect);
-           if (expect != result){
-               System.out.println("\n\tFound an error: expected results for PORT does not match\n");
+           result = urlVal.isValid(schemestring[pos1] + authritystring[pos2] + port + pathstring[pos4] + querystring[pos5]);
+           System.out.println(String.format("%-100s", schemestring[pos1] + authritystring[pos2] + port + pathstring[pos4] + querystring[pos5]) + "\tReturn: " + result + "\tExpected: " + expect);
+           if(result != expect){
+        	   System.out.println("\tFound an error: expected results for PORT does not match");
            }
            
            //testing Path in isValid
-           System.out.println("\ntesting Path\n");
-           System.out.println((result = urlVal.isValid(schemestring[pos1] + authrity + portstring[pos3] + pathstring[pos4] + querystring[pos5])) + "Return:" + result +"Expected:"+ expect);
-           if (expect != result){
-               System.out.println("\n\tFound an error: expected results for AUTHERITY does not match\n");
+           result = urlVal.isValid(schemestring[pos1] + authrity + portstring[pos3] + pathstring[pos4] + querystring[pos5]);
+           System.out.println(String.format("%-100s", schemestring[pos1] + authrity + portstring[pos3] + pathstring[pos4] + querystring[pos5]) + "\tReturn: " + result + "\tExpected: " + expect);
+           if(result != expect){
+        	   System.out.println("\tFound an error: expected results for PATH does not match");
            }
            
            //testing Scheme in isValid
-           System.out.println("\ntesting Scheme\n");
-           System.out.println((result = urlVal.isValid(scheme + authritystring[pos2] + portstring[pos3] + pathstring[pos4] + querystring[pos5])) + "Return:" + result +"Expected:"+ expect);
-           if (expect != result){
-               System.out.println("\n\tFound an error: expected results for AUTHERITY does not match\n");
+           result = urlVal.isValid(scheme + authritystring[pos2] + portstring[pos3] + pathstring[pos4] + querystring[pos5]);
+           System.out.println(String.format("%-100s", scheme + authritystring[pos2] + portstring[pos3] + pathstring[pos4] + querystring[pos5]) + "\tReturn: " + result + "\tExpected: " + expect);
+           if(result != expect){
+        	   System.out.println("\tFound an error: expected results for AUTHERITY does not match");
            }
 
        
        }
        
-       System.out.println("\ntesting complete\n");
+       System.out.println("Unit Test Complete\n");
    }
    
    public void testKnownValidURLCombinationUnitTest()
