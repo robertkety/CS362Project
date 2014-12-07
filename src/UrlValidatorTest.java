@@ -1305,7 +1305,7 @@ public class UrlValidatorTest extends TestCase {
 	    new ResultPair("bad2= ", false),	    
 	};
    
-    public void testQueryStrings()
+    public void testQueryStringsPartition()
     {
         UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
         String thisString = "";
@@ -1331,7 +1331,7 @@ public class UrlValidatorTest extends TestCase {
         new ResultPair("-1234", false)
     };
     
-    public void testPortNumbers()
+    public void testPortNumberPartition()
     {
         UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
         String thisString = "";
@@ -1362,7 +1362,7 @@ public class UrlValidatorTest extends TestCase {
     
     /* This function passes good an bad components to the URL Validator to confirm that it distinguishes between good and bad URLs. It is most
      * useful as a unit or regression test as its input domain is limited.  */
-   public void testIntegrityCheck()
+   public void testIntegrityCheckUnitTest()
    {   
 	   Random randomGen = new Random();
        boolean result = true;
