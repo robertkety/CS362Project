@@ -1183,7 +1183,7 @@ public class UrlValidatorTest extends TestCase {
 		   new ResultPair("../", false)
    };
  
-   public void testSubDomainPartition(){
+   public void SubDomainPartitionUnitTest(){
 	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
 	   String thisString = "";
 	   boolean result = false;
@@ -1467,7 +1467,7 @@ public class UrlValidatorTest extends TestCase {
        System.out.println("\ntesting complete\n");
    }
    
-   public void testAnyOtherUnitTest()
+   public void testKnownValidURLCombinationUnitTest()
    {
 	   UrlValidator urlVal = new UrlValidator(null, null, UrlValidator.ALLOW_ALL_SCHEMES);
        String thisString = "";
@@ -1477,28 +1477,26 @@ public class UrlValidatorTest extends TestCase {
        
        //all valid schemes combined with all valid TLDs:
        for (int i = 0; i < KnownValidSchemes.length; i++) {
-          ResultPair schemePair = KnownValidSchemes[i];
-          thisString = schemePair.item + "://www.google.";
-          
           for (int j = 0; j < KnownValidTLD.length; j++) {
-               ResultPair tldPair = KnownValidTLD[j];
-               thisString += tldPair.item;
-               System.out.println(String.format("%-70s", thisString) + "Expected: Valid" + "\tActual: " + (result = urlVal.isValid(thisString)));
-               assertEquals(thisString, expect, result);
-               
-               //additionally, each combination with all valid Query Strings
-               for (int n = 0; n < SpecificationQueryStrings.length; n++) {
-                   ResultPair queryPair = SpecificationQueryStrings[n];
-                   thisString += "/" + queryPair.item;
-                   System.out.println(String.format("%-70s", thisString) + "Expected: " + queryPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
-                   assertEquals(thisString, queryPair.valid, result);
-               }
-               //additionally, each combination with all valid Port numbers
-               for (int l = 0; l < SpecificationPortNumbers.length; l++) {
-                   ResultPair portPair = SpecificationPortNumbers[l];
-                   thisString += portPair.item;
-                   System.out.println(String.format("%-70s", thisString) + "Expected: " + portPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
-                   assertEquals(thisString, portPair.valid, result);
+               for (int l = 0; l < 61002; l++) {
+                   for (int n = 0; n < SpecificationQueryStrings.length; n++) {
+                	   ResultPair schemePair = KnownValidSchemes[i];
+                	   ResultPair tldPair = KnownValidTLD[j];
+                	   ResultPair portPair = new ResultPair(new Integer(l).toString(), true);
+                	   ResultPair queryPair = SpecificationQueryStrings[n];
+                       
+                	   thisString = schemePair.item;
+                	   thisString += "://www.google.";
+                       thisString += tldPair.item;
+                       thisString += ":";
+                       thisString += portPair.item;
+                       thisString += "/path/?";                       
+                       thisString += queryPair.item;
+                       
+                       if(!(result = urlVal.isValid(thisString)))
+                    	   System.out.println(String.format("%-100s", thisString) + "Expected: true\tActual: " + result);
+                       //assertEquals(thisString, true, result);
+                   }
                }
           }
       }
