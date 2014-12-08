@@ -376,19 +376,19 @@ public class UrlValidatorTest extends TestCase {
 		   for (int n = 0; n < KnownValidSchemes.length; n++) {
 			   ResultPair testPair = KnownValidSchemes[n];
 			   System.out.println(String.format("%-100s", thisString = testPair.item + "://www.google.com/") + "Expected: " + testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
-			   //assertEquals(testPair.item + "://www.google.com/", testPair.valid, result);		   
+			   assertEquals(testPair.item + "://www.google.com/", testPair.valid, result);		   
 		   }
 		   
 		   for (int n = 0; n < SpecificationValidSchemes.length; n++) {
 			   ResultPair testPair = SpecificationValidSchemes[n];
 			   System.out.println(String.format("%-100s", thisString = testPair.item + "://www.google.com/") + "Expected: " + testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
-			   //assertEquals(testPair.item + "://www.google.com/", testPair.valid, result);		   
+			   assertEquals(testPair.item + "://www.google.com/", testPair.valid, result);		   
 		   }
 		   
 		   for (int n = 0; n < SpecificationInvalidSchemes.length; n++) {
 			   ResultPair testPair = SpecificationInvalidSchemes[n];
 			   System.out.println(String.format("%-100s", thisString = testPair.item + "://www.google.com/") + "Expected: " + testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
-			   //assertEquals(testPair.item + "://www.google.com/", testPair.valid, result);		   
+			   assertEquals(testPair.item + "://www.google.com/", testPair.valid, result);		   
 		   }
 	   }
 	   
@@ -1147,19 +1147,19 @@ public class UrlValidatorTest extends TestCase {
 		   for (int n = 0; n < KnownValidTLD.length; n++) {
 			   ResultPair testPair = KnownValidTLD[n];
 			   System.out.println(String.format("%-100s", thisString = "http://www.google." + testPair.item) + "Expected: " + testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
-			   //assertEquals("http://www.google." + testPair.item, testPair.valid, result);
+			   assertEquals("http://www.google." + testPair.item, testPair.valid, result);
 		   }
 		   
 		   for (int n = 0; n < SpecificationValidTLD.length; n++) {
 			   ResultPair testPair = SpecificationValidTLD[n];
 			   System.out.println(String.format("%-100s", thisString = "http://www.google." + testPair.item) + "Expected: " + testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
-			   //assertEquals("http://www.google." + testPair.item, testPair.valid, result);		   
+			   assertEquals("http://www.google." + testPair.item, testPair.valid, result);		   
 		   }
 		   
 		   for (int n = 0; n < SpecificationInvalidTLD.length; n++) {
 			   ResultPair testPair = SpecificationInvalidTLD[n];
 			   System.out.println(String.format("%-100s", thisString = "http://www.google." + testPair.item) + "Expected: " + testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
-			   //assertEquals("http://www.google." + testPair.item, testPair.valid, result);		   
+			   assertEquals("http://www.google." + testPair.item, testPair.valid, result);		   
 			   }
 	   }
 	   
@@ -1228,7 +1228,7 @@ public class UrlValidatorTest extends TestCase {
 									   
 							   validity = testPair1.valid && testPair2.valid && testPair3.valid && testPair4.valid && testPair5.valid;
 							   
-							   if(hostname.length() > 253)
+							   if(hostname.length() > 255)
 								   validity = false;
 							   
 							   url = "http://" + hostname + "/";
@@ -1248,7 +1248,7 @@ public class UrlValidatorTest extends TestCase {
 							   //System.out.println(String.format("%-70s", String.format("Alldomain elements: [%d].[%d].[%d].[%d].[%d]", k, m, n, p, q)) + "\t\tExpected: " + validity + "\t\tActual: " + (result = urlVal.isValid(url)));
 							   //System.out.println(((hostname.length() > 261) ? String.format("%-262s", "<Output too long>") : String.format("%-262s", url)) + "Expected: " + validity + "\tActual: " + (result = urlVal.isValid(url)));
 					           
-							   //assertEquals(url, validity, result);
+							   assertEquals(url, validity, result);
 						   }
 					   }
 				   }
@@ -1286,6 +1286,7 @@ public class UrlValidatorTest extends TestCase {
 	   ResultPair[] SpecificationInvalidQueryStrings = {
 		    new ResultPair("bad=@!%$% &%^&(*^&*(", false),
 		    new ResultPair("bad2= ", false),	    
+		    new ResultPair("whataboutnewline\ncharacters", false),	
 		};
 	   
 	   public void testQueryStringsPartition(){
@@ -1298,13 +1299,13 @@ public class UrlValidatorTest extends TestCase {
 			for (int n = 0; n < SpecificationQueryStrings.length; n++) {
 			    ResultPair testPair = SpecificationQueryStrings[n];
 			    System.out.println(String.format("%-100s", thisString = "http://www.google.com/path?" + testPair.item) + "Expected: "+ testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
-			    //assertEquals("http://www.google.com/" + testPair.item, testPair.valid, result);
+			    assertEquals("http://www.google.com/" + testPair.item, testPair.valid, result);
 			}
 			
 			for (int n = 0; n < SpecificationInvalidQueryStrings.length; n++) {
 			    ResultPair testPair = SpecificationInvalidQueryStrings[n];
 			    System.out.println(String.format("%-100s", thisString = "http://www.google.com/path?" + testPair.item) + "Expected: "+ testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
-			    //assertEquals("http://www.google.com/" + testPair.item, testPair.valid, result);
+			    assertEquals("http://www.google.com/" + testPair.item, testPair.valid, result);
 			}
 	   }
 	
@@ -1324,13 +1325,13 @@ public class UrlValidatorTest extends TestCase {
 			for (int n = 0; n <= 65535; n++) {
 			    ResultPair testPair = new ResultPair(new Integer(n).toString(), true);
 			    System.out.println(String.format("%-100s", thisString = "http://www.google.com:" + testPair.item) + "Expected: "+ testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
-			    //assertEquals("http://www.google.com" + testPair.item, testPair.valid, result);
+			    assertEquals("http://www.google.com" + testPair.item, testPair.valid, result);
 			}
 			
 			for (int n = 0; n < SpecificationInvalidPortNumbers.length; n++) {
 			    ResultPair testPair = SpecificationInvalidPortNumbers[n];
 			    System.out.println(String.format("%-100s", thisString = "http://www.google.com:" + testPair.item) + "Expected: "+ testPair.valid + "\tActual: " + (result = urlVal.isValid(thisString)));
-			    //assertEquals("http://www.google.com" + testPair.item, testPair.valid, result);
+			    assertEquals("http://www.google.com" + testPair.item, testPair.valid, result);
 		    }
 	   }
 	
@@ -1470,7 +1471,7 @@ public class UrlValidatorTest extends TestCase {
 				           if(!(result = urlVal.isValid(thisString)))
 				        	   System.out.println(String.format("%-100s", thisString) + "Expected: true\tActual: " + result);
 				           
-				           //assertEquals(thisString, true, result);
+				           assertEquals(thisString, true, result);
 		               }
 		           }
 		      }
